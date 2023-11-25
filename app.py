@@ -9,9 +9,9 @@ server = 'tcp:smartapp.database.windows.net,1433'
 database = 'kpi_engine'
 username = 'smartapp2324'
 password = 'Sm4rt4pp2324!'
-driver= '{ODBC Driver 17 for SQL Server}'
+driver = '{ODBC Driver 18 for SQL Server}'
 
-conn_str = f'DRIVER={driver};Server={server};Database={database};Uid={username};Pwd={password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
+conn_str = f'DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}'
 
 
 @app.route('/', methods=['GET'])
@@ -35,13 +35,15 @@ def add_new_kpi_definition():
 def get_kpi_by_name(kpi_name):
     try:
         print("getting connection")
-        connection = create_server_connection(conn_str)
+        # connection = create_server_connection(conn_str)
         print("connection created")
-        query = "SELECT * FROM KPI_CATALOGUE WHERE kpi_name = %s" + kpi_name + "ORDER BY date DESC LIMIT 1"
-        result = read_query(connection, query)
+        query = "SELECT * FROM KPI_CATALOGUE WHERE kpi_name = %s" + kpi_name.upper() + "ORDER BY date DESC LIMIT 1"
+        # result = read_query(connection, query)
 
         # creo il json da restituire al FE
-        kpis = [{"kpi_name": row[0], "value": row[1], "date": row[2]} for row in result]
+        # kpis = [{"kpi_name": row[0], "value": row[1], "date": row[2]} for row in result]
+        if kpi_name.upper() == 'OEE':
+            kpis = [{"kpi_name": "OEE", "value": 10.2, "date": "25-11-2023"}]
 
         return jsonify(kpis)
     except Exception as e:
@@ -58,6 +60,12 @@ def get_all_kpi():
 
         # creo il json da restituire al FE
         kpis = [{"kpi_name": row[0], "value": row[1], "date": row[2]} for row in result]
+        # kpis = [
+        #     {"kpi_name": "OEE", "value": 10.2, "date": "2023-11-23"},
+        #     {"kpi_name": "AV", "value": 10.5, "date": "2023-11-24"},
+        #     {"kpi_name": "AQ", "value": 10.7, "date": "2023-11-25"},
+        #     {"kpi_name": "PE", "value": 10.7, "date": "2023-11-25"}
+        # ]
 
         return jsonify(kpis)
     except Exception as e:
