@@ -22,6 +22,7 @@ def config_influx_parser(path):
         "bucket": bucket
     })
 
+
 def config_mysql_parser(path):
     config = configparser.ConfigParser()
 
@@ -41,3 +42,12 @@ def config_mysql_parser(path):
         "password": password,
         "database": database
     })
+
+
+def get_sqlconnection_string(path):
+    config = configparser.ConfigParser()
+
+    # Legge il file di configurazione
+    config.read(path)
+
+    return config.get('DEFAULT', 'conn_str')  # Recupera l'URL

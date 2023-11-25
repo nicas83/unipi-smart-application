@@ -1,7 +1,0 @@
-MYSQL_ROOT_PASSWORD=smartapp
-MYSQL_DATABASE=mydatabase
-MYSQL_USER=mastro
-MYSQL_PASSWORD=geppetto
-targetip=127.0.0.1
-port=3306
-db=STORAGE

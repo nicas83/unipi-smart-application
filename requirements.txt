@@ -1,5 +1,5 @@
-fastapi
-pydantic
 requests
 Flask
 django-scheduler
+Parsley
+pyodbc

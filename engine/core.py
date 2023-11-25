@@ -1,4 +1,3 @@
-import json
 import requests
 
 from data.influx_connection import DBConnection

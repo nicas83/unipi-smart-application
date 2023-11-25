@@ -1,3 +1,0 @@
-fastapi
-databases
-mysql-connector-python

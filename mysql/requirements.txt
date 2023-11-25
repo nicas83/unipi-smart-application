@@ -1,2 +1,0 @@
-mysql-connector-python
-Parsley==1.3

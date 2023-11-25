@@ -1,23 +1,11 @@
-import mysql.connector
-#from mysql.connector import Error
+import pyodbc
 
-from utils.utils import config_mysql_parser
+from utils.utils import get_sqlconnection_string
 
 
 # Funzione per connettersi a un database MySQL
 def create_server_connection():
-    config = config_mysql_parser('config/mysql.properties')
-    connection = None
-    # try:
-    #     connection = mysql.connector.connect(
-    #         host=config["hostname"],
-    #         user=config["username"],
-    #         passwd=config["password"],
-    #         database=config["database"]
-    #     )
-    #     print("MySQL Database connection successful")
-    # except Error as err:
-    #     print(f"Error: '{err}'")
+    connection = pyodbc.connect(get_sqlconnection_string('config/mysql.properties'))
     return connection
 
 
@@ -28,10 +16,11 @@ def execute_query(connection, query):
         cursor.execute(query)
         connection.commit()
         print("Query successful")
-    except Error as err:
+    except pyodbc.Error as err:
         print(f"Error: '{err}'")
-    # Chiusura della connessione al database
-    connection.close()
+    finally:
+        # Chiusura della connessione al database
+        connection.close()
 
 
 # Funzione per eseguire una query di lettura (SELECT)
@@ -44,5 +33,8 @@ def read_query(connection, query):
         # Chiusura della connessione al database
         connection.close()
         return result
-    except Error as err:
+    except pyodbc.Error as err:
         print(f"Error: '{err}'")
+    finally:
+        # Chiusura della connessione al database
+        connection.close()
