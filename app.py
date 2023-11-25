@@ -5,10 +5,19 @@ from data.mysql_connection import create_server_connection, read_query
 
 app = Flask(__name__)
 
+server = 'tcp:smartapp.database.windows.net,1433'
+database = 'kpi_engine'
+username = 'smartapp2324'
+password = 'Sm4rt4pp2324!'
+driver= '{ODBC Driver 17 for SQL Server}'
+
+conn_str = f'DRIVER={driver};Server={server};Database={database};Uid={username};Pwd={password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
+
 
 @app.route('/', methods=['GET'])
 def index():
-    return "Hello, World!"
+    return "Hello, World! The group 3 will SUCK!"
+
 
 @app.route('/kpi_definition', methods=['POST'])
 def add_new_kpi_definition():
@@ -25,7 +34,9 @@ def add_new_kpi_definition():
 @app.route('/kpi/<kpi_name>', methods=['GET'])
 def get_kpi_by_name(kpi_name):
     try:
-        connection = create_server_connection()
+        print("getting connection")
+        connection = create_server_connection(conn_str)
+        print("connection created")
         query = "SELECT * FROM KPI_CATALOGUE WHERE kpi_name = %s" + kpi_name + "ORDER BY date DESC LIMIT 1"
         result = read_query(connection, query)
 
@@ -55,4 +66,4 @@ def get_all_kpi():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

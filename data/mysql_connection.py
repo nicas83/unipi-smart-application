@@ -4,8 +4,8 @@ from utils.utils import get_sqlconnection_string
 
 
 # Funzione per connettersi a un database MySQL
-def create_server_connection():
-    connection = pyodbc.connect(get_sqlconnection_string('config/mysql.properties'))
+def create_server_connection(connection_string):
+    connection = pyodbc.connect(connection_string)
     return connection
 
 
