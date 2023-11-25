@@ -26,7 +26,7 @@ def add_new_kpi_definition():
 def get_kpi_by_name(kpi_name):
     try:
         connection = create_server_connection()
-        query = "SELECT * FROM kpi WHERE kpi_name = %s" + kpi_name + "ORDER BY date DESC LIMIT 1"
+        query = "SELECT * FROM KPI_CATALOGUE WHERE kpi_name = %s" + kpi_name + "ORDER BY date DESC LIMIT 1"
         result = read_query(connection, query)
 
         # creo il json da restituire al FE
@@ -42,7 +42,7 @@ def get_kpi_by_name(kpi_name):
 def get_all_kpi():
     try:
         connection = create_server_connection()
-        query = "SELECT * FROM kpi ORDER BY date DESC LIMIT 1"
+        query = "SELECT * FROM KPI_CATALOGUE ORDER BY date DESC LIMIT 1"
         result = read_query(connection, query)
 
         # creo il json da restituire al FE
@@ -54,5 +54,5 @@ def get_all_kpi():
         return jsonify({"error": "An error occurred retrieving the KPIs."}), 500
 
 
-if __name__ == '__kpiengine__':
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run()

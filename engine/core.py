@@ -18,7 +18,7 @@ class KPICoreEngine:
     def calculate_oee(self):
         # connect to the database MySQL
         connection = create_server_connection()
-        query = "select AV, PE, QA from KPI where kpi_name in ('AV', 'PE', 'QA') and date = yesterday()"
+        query = "select AV, PE, QA from KPI_CATALOGUE where kpi_name in ('AV', 'PE', 'QA') and date = yesterday()"
         result = read_query(connection, query)
         av, pe, qa = 0, 0, 0
         for row in result:
