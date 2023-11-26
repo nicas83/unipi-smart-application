@@ -7,7 +7,6 @@ import re, parsley
 import math
 
 
-
 # define the Core Engine for kpi metric
 class KPICoreEngine:
     def __init__(self):
@@ -121,12 +120,12 @@ class KPICoreEngine:
         self.__save_kpi('DR', downtime_rate)
 
     def calculate_generic_kpi(self, kpi_name):
-        url = "http://localhost:8086/get_kpi/"+kpi_name
+        url = "http://localhost:8086/get_kpi/" + kpi_name
         response = requests.get(url + kpi_name)
         data = response.json()
 
         ############################# WIP - KPI Parser #############################
-        
+
         def calculate(start, pairs):
             result = start
             for op, *values in pairs:
@@ -191,7 +190,7 @@ class KPICoreEngine:
 
         ############################# WIP - KPI Parser #############################
         # TODO: logica di calcolo kpi generico
-        value = 0 # da calcolare
+        value = 0  # da calcolare
         self.__save_kpi(kpi_name, value)
 
     @staticmethod
