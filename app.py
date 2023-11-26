@@ -103,7 +103,7 @@ def get_all_kpi():
         return jsonify({"error": "An error occurred retrieving the KPIs."}), 500
 
 
-@app.route('/kpis/{kpi_name}/stats', methods=['GET'])
+@app.route('/kpis/stats/<kpi_name>', methods=['GET'])
 def get_kpi_stats(kpi_name):
     kpis = None
     if kpi_name == '' or kpi_name.upper() == 'ALL':
