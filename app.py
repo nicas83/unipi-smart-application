@@ -100,7 +100,7 @@ def get_all_kpi():
         return jsonify(kpis)
     except Exception as e:
         print(f"An error occurred: {e}")
-        return jsonify({"error": "An error occurred retrieving the KPIs."}), 500
+        return jsonify({"error": f"An error occurred retrieving the KPIs. Error:{e}"}), 500
 
 
 @app.route('/kpi/<kpi_name>/stats', methods=['GET'])
@@ -179,12 +179,12 @@ def get_kpi_stats(kpi_name):
 @app.route('/test_connection', methods=['GET'])
 def test_connection():
     try:
-        connection = create_server_connection()
+        connection = create_server_connection(conn_str)
         query = "SELECT * FROM KPI_CATALOGUE ORDER BY date DESC LIMIT 1"
         result = read_query(connection, query)
-        return jsonify(result)
+        return jsonify("Executed" + result)
     except Exception as e:
-        return jsonify(e.__cause__), 500
+        return jsonify({"error": f"An error occurred retrieving the KPIs. Error:{e}"}), 500
 
 
 if __name__ == '__main__':
