@@ -43,7 +43,17 @@ def get_kpi_by_name(kpi_name):
         # creo il json da restituire al FE
         # kpis = [{"kpi_name": row[0], "value": row[1], "date": row[2]} for row in result]
         if kpi_name.upper() == 'OEE':
-            kpis = [{"kpi_name": "OEE", "value": 10.2, "date": "25-11-2023"}]
+            kpis = [{"kpi_name": "OEE", "value": 10.2, "taxonomy":"PRODUCTION", "group_by":"ALL", "date": "2023-11-23"}]
+        elif kpi_name.upper() == "AV":
+            kpis = [{"kpi_name": "AV", "value": 10.5, "taxonomy":"PRODUCTION", "group_by":"ALL", "date": "2023-11-24"}]
+        elif kpi_name.upper() == "AQ":
+            kpis = [{"kpi_name": "AQ", "value": 10.7, "taxonomy":"PRODUCTION", "group_by":"ALL", "date": "2023-11-25"}]
+        elif kpi_name.upper() == "PE":
+            kpis = [{"kpi_name": "PE", "value": 10.7, "taxonomy":"PRODUCTION", "group_by":"ALL", "date": "2023-11-25"}]
+        elif kpi_name.upper() == "AHA":
+            kpis = [{"kpi_name": "AHA", "value": 10.7, "taxonomy":"BIOMEDICAL", "group_by":"PATIENT_1", "date": "2023-11-25"}]
+        elif kpi_name.upper() == "AHA":
+            kpis = [{"kpi_name": "AHA", "value": 10.7, "taxonomy":"BIOMEDICAL", "group_by":"PATIENT_2", "date": "2023-11-24"}]
 
         return jsonify(kpis)
     except Exception as e:
@@ -54,18 +64,18 @@ def get_kpi_by_name(kpi_name):
 @app.route('/kpis', methods=['GET'])
 def get_all_kpi():
     try:
-        connection = create_server_connection()
+        # connection = create_server_connection()
         query = "SELECT * FROM KPI_CATALOGUE ORDER BY date DESC LIMIT 1"
-        result = read_query(connection, query)
+        # result = read_query(connection, query)
 
         # creo il json da restituire al FE
-        kpis = [{"kpi_name": row[0], "value": row[1], "date": row[2]} for row in result]
-        # kpis = [
-        #     {"kpi_name": "OEE", "value": 10.2, "date": "2023-11-23"},
-        #     {"kpi_name": "AV", "value": 10.5, "date": "2023-11-24"},
-        #     {"kpi_name": "AQ", "value": 10.7, "date": "2023-11-25"},
-        #     {"kpi_name": "PE", "value": 10.7, "date": "2023-11-25"}
-        # ]
+        #kpis = [{"kpi_name": row[0], "value": row[1], "date": row[2]} for row in result]
+        kpis = [
+             {"kpi_name": "OEE", "value": 10.2, "taxonomy":"", "group_by":"", "date": "2023-11-23"},
+             {"kpi_name": "AV", "value": 10.5, "taxonomy":"", "group_by":"", "date": "2023-11-24"},
+             {"kpi_name": "AQ", "value": 10.7, "taxonomy":"", "group_by":"", "date": "2023-11-25"},
+             {"kpi_name": "PE", "value": 10.7, "taxonomy":"", "group_by":"", "date": "2023-11-25"}
+        ]
 
         return jsonify(kpis)
     except Exception as e:
