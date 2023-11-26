@@ -5,13 +5,7 @@ from data.mysql_connection import create_server_connection, read_query
 
 app = Flask(__name__)
 
-server = 'tcp:smartapp.database.windows.net,1433'
-database = 'kpi_engine'
-username = 'smartapp2324'
-password = 'Sm4rt4pp2324!'
-driver = '{ODBC Driver 18 for SQL Server}'
-
-conn_str = f'DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}'
+conn_str = 'DRIVER={ODBC Driver 18 for SQL Server};SERVER=tcp:smartapp.database.windows.net,1433;DATABASE=kpi_engine;UID=smartapp2324;PWD=Sm4rt4pp2324!'
 
 
 @app.route('/', methods=['GET'])
