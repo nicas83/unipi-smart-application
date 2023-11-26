@@ -5,9 +5,6 @@ from data.mysql_connection import create_server_connection, read_query
 
 app = Flask(__name__)
 
-conn_str = 'DRIVER={ODBC Driver 18 for SQL Server};SERVER=tcp:smartapp.database.windows.net,1433;DATABASE=kpi_engine;UID=smartapp2324;PWD=Sm4rt4pp2324!'
-
-
 @app.route('/', methods=['GET'])
 def index():
     return "Hello, World! The group 3 will SUCK!"
@@ -173,7 +170,7 @@ def get_kpi_stats(kpi_name):
 @app.route('/test_connection', methods=['GET'])
 def test_connection():
     try:
-        connection = create_server_connection(conn_str)
+        connection = create_server_connection()
         query = "SELECT * FROM KPI_CATALOGUE ORDER BY date DESC LIMIT 1"
         result = read_query(connection, query)
         return jsonify("Executed" + result)

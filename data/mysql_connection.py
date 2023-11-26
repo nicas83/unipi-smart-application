@@ -4,8 +4,9 @@ from utils.utils import get_sqlconnection_string
 
 
 # Funzione per connettersi a un database MySQL
-def create_server_connection(connection_string):
-    connection = pyodbc.connect(connection_string)
+def create_server_connection():
+    connection = pyodbc.connect("DRIVER={ODBC Driver 18 for SQL Server};SERVER=tcp:smartapp.database.windows.net,"
+                                "1433;DATABASE=kpi_engine;UID=smartapp2324;PWD=Sm4rt4pp2324!")
     return connection
 
 
