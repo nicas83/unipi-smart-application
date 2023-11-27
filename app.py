@@ -8,23 +8,19 @@ from data.mysql_connection import create_server_connection, read_query
 
 app = Flask(__name__)
 kpis = [
-    {"kpi_name": "OEE", "value": 10.2, "taxonomy": "PRODUCTION", "group_by": "ALL",
+    {"kpi_name": "oee", "value": 10.2, "taxonomy": "PRODUCTION", "group_by": "ALL",
      "last_update": "2023-11-23T00:00:00.000Z"},
-    {"kpi_name": "AV", "value": 5, "taxonomy": "PRODUCTION", "group_by": "ALL",
+    {"kpi_name": "av", "value": 5, "taxonomy": "PRODUCTION", "group_by": "ALL",
      "last_update": "2023-11-24T00:00:00.000Z"},
-    {"kpi_name": "AQ", "value": 3.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
+    {"kpi_name": "aq", "value": 3.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
      "last_update": "2023-11-25T00:00:00.000Z"},
-    {"kpi_name": "PE", "value": 0.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
+    {"kpi_name": "pe", "value": 0.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
      "last_update": "2023-11-25T00:00:00.000Z"},
-    {"kpi_name": "PRODUCTION_VOLUME", "value": 200, "taxonomy": "PRODUCTION", "group_by": "ALL",
+    {"kpi_name": "production_volume", "value": 200, "taxonomy": "PRODUCTION", "group_by": "ALL",
      "last_update": "2023-11-25T00:00:00.000Z"},
-    {"kpi_name": "DOWNTIME_RATE", "value": 0.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
+    {"kpi_name": "downtime_rate", "value": 0.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
      "last_update": "2023-11-25T00:00:00.000Z"},
-    {"kpi_name": "ENERGY_CONSUMPTION", "value": 320.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
-     "last_update": "2023-11-25T00:00:00.000Z"},
-    {"kpi_name": "AHA", "value": 10.7, "taxonomy": "BIOMEDICAL", "group_by": "ALL",
-     "last_update": "2023-11-25T00:00:00.000Z"},
-    {"kpi_name": "EH", "value": 10.7, "taxonomy": "BIOMEDICAL", "group_by": "",
+    {"kpi_name": "energy_consumption", "value": 320.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
      "last_update": "2023-11-25T00:00:00.000Z"}
 ]
 
@@ -83,39 +79,7 @@ def get_kpi_by_name(kpi_name):
         #
         # # creo il json da restituire al FE
         # # kpis = [{"kpi_name": row[0], "value": row[1], "last_update": row[2]} for row in result]
-        # if kpi_name.upper() == 'OEE':
-        #     single_kpi = [
-        #         {"kpi_name": "OEE", "value": 10.2, "taxonomy": "PRODUCTION", "group_by": "ALL",
-        #          "last_update": "2023-11-23T00:00:00.000Z"}]
-        # elif kpi_name.upper() == "AV":
-        #     single_kpi = [
-        #         {"kpi_name": "AV", "value": 4.5, "taxonomy": "PRODUCTION", "group_by": "ALL",
-        #          "last_update": "2023-11-24T00:00:00.000Z"}]
-        # elif kpi_name.upper() == "AQ":
-        #     single_kpi = [
-        #         {"kpi_name": "AQ", "value": 11.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
-        #          "last_update": "2023-11-25T00:00:00.000Z"}]
-        # elif kpi_name.upper() == "PE":
-        #     single_kpi = [
-        #         {"kpi_name": "PE", "value": 3.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
-        #          "last_update": "2023-11-25T00:00:00.000Z"}]
-        # elif kpi_name.upper() == "AHA":
-        #     kpsingle_kpiis = [{"kpi_name": "AHA", "value": 0.7, "taxonomy": "BIOMEDICAL", "group_by": "PATIENT_1",
-        #              "last_update": "2023-11-25T00:00:00.000Z"}]
-        # elif kpi_name.upper() == "EH":
-        #     single_kpi = [{"kpi_name": "EH", "value": 0.05, "taxonomy": "BIOMEDICAL", "group_by": "PATIENT_2",
-        #              "last_update": "2023-11-24T00:00:00.000Z"}]
-        # elif kpi_name.upper() == "DOWNTIME_RATE":
-        #     single_kpi = [{"kpi_name": "DOWNTIME_RATE", "value": 0.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
-        #              "last_update": "2023-11-25T00:00:00.000Z"}]
-        # elif kpi_name.upper() == "ENERGY_CONSUMPTION":
-        #     single_kpi = [{"kpi_name": "ENERGY_CONSUMPTION", "value": 320.7, "taxonomy": "PRODUCTION", "group_by": "ALL",
-        #              "last_update": "2023-11-25T00:00:00.000Z"}]
-        # elif kpi_name.upper() == "PRODUCTION_VOLUME":
-        #     single_kpi = [{"kpi_name": "PRODUCTION_VOLUME", "value": 200, "taxonomy": "PRODUCTION", "group_by": "ALL",
-        #              "last_update": "2023-11-25T00:00:00.000Z"}]
-        #
-        # return jsonify(kpis)
+
 
         # Cerca il KPI corrispondente nel dizionario
         kpi = next((item for item in kpis if item["kpi_name"].upper() == kpi_name.upper()), None)
@@ -164,86 +128,53 @@ def get_all_kpi():
         return jsonify({"error": f"An error occurred retrieving the KPIs. Error:{e}"}), 500
 
 
-@app.route('/kpi/<kpi_name>/stats', methods=['GET'])
-def get_kpi_stats(kpi_name):
-    kpis = None
-    if kpi_name == '' or kpi_name.upper() == 'ALL':
-        # all kpis
-        kpis = [
-            {"kpi_name": "OEE", "execution_time": 10.2, "last_update": "2023-11-23T00:00:00.000Z",
+def get_kpi_stats(taxonomy=None):
+    if taxonomy is None or taxonomy.upper() == 'PRODUCTION':
+        kpis_stats = [
+            {"kpi_name": "oee", "execution_time": 10.2, "last_update": "2023-11-23T00:00:00.000Z",
              "details": {"api_name": "/kpi/oee",
                          "num_call": "34"}},
-            {"kpi_name": "AV", "execution_time": 3, "last_update": "2023-11-23T00:00:00.000Z",
+            {"kpi_name": "av", "execution_time": 3, "last_update": "2023-11-23T00:00:00.000Z",
              "details": {"api_name": "/kpi/av",
                          "num_call": "11"}},
-            {"kpi_name": "AQ", "execution_time": 5.7, "last_update": "2023-11-23T00:00:00.000Z",
+            {"kpi_name": "aq", "execution_time": 5.7, "last_update": "2023-11-23T00:00:00.000Z",
              "details": {"api_name": "/kpi/aq",
                          "num_call": "12"}},
-            {"kpi_name": "PE", "execution_time": 2.7, "last_update": "2023-11-23T00:00:00.000Z",
+            {"kpi_name": "pe", "execution_time": 2.7, "last_update": "2023-11-23T00:00:00.000Z",
              "details": {"api_name": "/kpi/pe",
                          "num_call": "5"}},
-            {"kpi_name": "PRODUCTION_VOLUME", "execution_time": 2.7, "last_update": "2023-11-23T00:00:00.000Z",
+            {"kpi_name": "production_volume", "execution_time": 2.7, "last_update": "2023-11-23T00:00:00.000Z",
              "details": {"api_name": "/kpi/production_volume", "num_call": "12"}},
-            {"kpi_name": "ENERGY_CONSUMPTION", "execution_time": 4.7, "last_update": "2023-11-23T00:00:00.000Z",
+            {"kpi_name": "energy_consumption", "execution_time": 4.7, "last_update": "2023-11-23T00:00:00.000Z",
              "details": {"api_name": "/kpi/energy_consumption", "num_call": "12"}},
-            {"kpi_name": "DOWNTIME_RATE", "execution_time": 14.7, "last_update": "2023-11-23T00:00:00.000Z",
+            {"kpi_name": "downtime_rate", "execution_time": 14.7, "last_update": "2023-11-23T00:00:00.000Z",
              "details": {"api_name": "/kpi/downtime_rate", "num_call": "12"}}
         ]
-    elif kpi_name.upper() == 'OEE':
-        # oee
-        kpis = [
-            {"kpi_name": "OEE", "execution_time": 10.2, "last_update": "2023-11-23T00:00:00.000Z",
-             "details": {"api_name": "/kpi/aha",
-                         "num_call": "12"}}]
-    elif kpi_name.upper() == 'AV':
-        # av
-        kpis = [
-            {"kpi_name": "AV", "execution_time": 5.4, "last_update": "2023-11-23T00:00:00.000Z",
-             "details": {"api_name": "/kpi/aha",
-                         "num_call": "11"}}]
-    elif kpi_name.upper() == 'AQ':
-        # aq
-        kpis = [
-            {"kpi_name": "AQ", "execution_time": 3.7, "last_update": "2023-11-23T00:00:00.000Z",
-             "details": {"api_name": "/kpi/aha",
-                         "num_call": "34"}}]
-    elif kpi_name.upper() == 'PE':
-        # pe
-        kpis = [
-            {"kpi_name": "PE", "execution_time": 7.3, "last_update": "2023-11-23T00:00:00.000Z",
-             "details": {"api_name": "/kpi/aha",
-                         "num_call": "124"}}]
-    elif kpi_name.upper() == 'AHA':
-        # aha
-        kpis = [
-            {"kpi_name": "AHA", "execution_time": 12.5, "last_update": "2023-11-23T00:00:00.000Z",
-             "details": {"api_name": "/kpi/aha",
-                         "num_call": "3"}}]
-    elif kpi_name.upper() == 'EH':
-        # eh
-        kpis = [
-            {"kpi_name": "EH", "execution_time": 45.2, "last_update": "2023-11-23T00:00:00.000Z",
-             "details": {"api_name": "/kpi/aha", "num_call": "23"}}]
-    elif kpi_name.upper() == 'DOWNTIME_RATE':
-        # downtime rate
-        kpis = [
-            {"kpi_name": "DOWNTIME_RATE", "execution_time": 2.2, "last_update": "2023-11-23T00:00:00.000Z",
-             "details": {"api_name": "/kpi/aha", "num_call": "41"}}]
-    elif kpi_name.upper() == 'ENERGY_CONSUMPTION':
-        # energy consumption
-        kpis = [
-            {"kpi_name": "ENERGY_CONSUMPTION", "execution_time": 8.2, "last_update": "2023-11-23T00:00:00.000Z",
-             "details": {"api_name": "/kpi/aha", "num_call": "13"}}]
-    elif kpi_name.upper() == 'PRODUCTION_VOLUME':
-        # production volume
-        kpis = [
-            {"kpi_name": "PRODUCTION_VOLUME", "execution_time": 3.2, "last_update": "2023-11-23T00:00:00.000Z",
-             "details": {"api_name": "/kpi/aha", "num_call": "34"}}]
+    elif taxonomy.upper() == 'BIOMEDICAL':
+        kpis_stats = [
+            {"kpi_name": "asimmetry_index", "execution_time": 10.7, "last_update": "2023-11-23T00:00:00.000Z",
+             "details": {"api_name": "/kpi/asimmetry_index",
+                         "num_call": "3"}},
+            {"kpi_name": "difference_index", "execution_time": 45.2, "last_update": "2023-11-23T00:00:00.000Z",
+             "details": {"api_name": "/kpi/difference_index", "num_call": "23"}}
+        ]
     else:
-        # error
-        raise Exception
+        raise Exception("Taxonomy not found")
 
-    return jsonify(kpis)
+    return kpis_stats
+
+
+@app.route('/kpi/<kpi_name>/<taxonomy>/stats', methods=['GET'])
+@app.route('/kpi/<kpi_name>/stats', methods=['GET'])
+def get_statistics(kpi_name=None, taxonomy=None):
+    kpis_stats = get_kpi_stats(taxonomy)
+    if (kpi_name is None or kpi_name.upper() == 'ALL') and ():
+        # all kpis
+        return jsonify(kpis_stats)
+    else:
+        # Cerca il KPI corrispondente nel dizionario
+        kpi = next((item for item in kpis_stats if item["kpi_name"].upper() == kpi_name.upper()), None)
+        return jsonify(kpi)
 
 
 @app.route('/test_connection', methods=['GET'])
